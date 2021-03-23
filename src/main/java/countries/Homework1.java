@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class Homework1 {
 
@@ -20,59 +21,56 @@ public class Homework1 {
      * Returns whether there is at least one country with the word "island" in its name ignoring case.
      */
     public boolean streamPipeline1() {
-        // TODO
-        return false;
+        return countries.stream().filter(country -> country.getName().toLowerCase().contains("island")).count()>1;
     }
 
     /**
      *  Returns the first country name that contains the word "island" ignoring case.
      */
     public Optional<String> streamPipeline2() {
-        // TODO
-        return null;
+        return countries.stream().filter(country -> country.getName().toLowerCase().contains("island")).map(Country::getName).findFirst();
     }
 
     /**
      * Prints each country name in which the first and the last letters are the same ignoring case.
      */
     public void streamPipeline3() {
-        // TODO
+        countries.stream().filter(country -> country.getName().toLowerCase().charAt(0) == country.getName().toLowerCase().charAt(country.getName().length()-1)).map(country -> country.getName()).forEach(System.out::println);
     }
 
     /**
      * Prints the populations of the first ten least populous countries.
      */
     public void streamPipeline4() {
-        // TODO
+        countries.stream().mapToLong(Country::getPopulation).sorted().limit(10).forEach(System.out::println);
     }
 
     /**
      * Prints the names of the first ten least populous countries.
      */
     public void streamPipeline5() {
-        // TODO
+        countries.stream().sorted(Comparator.comparingLong(Country::getPopulation)).limit(10).map(country -> country.getName()).forEach(System.out::println);
     }
 
     /**
      * Returns summary statistics about the number of country name translations associated with each country.
      */
     public IntSummaryStatistics streamPipeline6() {
-        // TODO
-        return null;
+        return countries.stream().mapToInt(country -> country.getTranslations().size()).summaryStatistics();
     }
 
     /**
      * Prints the names of countries in the ascending order of the number of timezones.
      */
     public void streamPipeline7() {
-        // TODO
+        countries.stream().sorted(Comparator.comparingInt(country -> country.getTimezones().size())).map(Country::getName).forEach(System.out::println);
     }
 
     /**
      * Prints the number of timezones for each country in the form {@code name:timezones}, in the ascending order of the number of timezones.
      */
     public void streamPipeline8() {
-        // TODO
+        countries.stream().sorted(Comparator.comparingInt(country -> country.getTimezones().size())).forEach(x -> System.out.format("%s:%d\n", x.getName(), x.getTimezones().size()));
     }
 
     /**
@@ -80,15 +78,11 @@ public class Homework1 {
 ed by the language code "es").
      */
     public long streamPipeline9() {
-        // TODO
-        return 0;
+        return countries.stream().filter(country -> !country.getTranslations().containsKey("es")).count();
     }
 
-    /**
-     * Prints the names of countries with null area.
-     */
     public void streamPipeline10() {
-        // TODO
+        countries.stream().filter(country -> country.getArea() == null).map(Country::getName).forEach(System.out::println);
     }
 
     /**
